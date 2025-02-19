@@ -1,12 +1,13 @@
 import { verify } from "jsonwebtoken";
 import dotenv from "dotenv";
+import { getCookie } from "hono/cookie";
 dotenv.config();
 
 export const jwtValidation = async (c: any, next: any) => {
   try {
-    const token = await c.req.header("Authorization")?.replace("Bearer ", "");
+    const token = getCookie(c, "auth_token");
     if (!token) {
-      return c.json({ error: "Token Not found" });
+      return c.redirect("/signin");
     }
 
     const secretKey = process.env.SECRET_KEY;
@@ -16,7 +17,7 @@ export const jwtValidation = async (c: any, next: any) => {
       });
     }
     const decoded = verify(token, secretKey);
-    c.req.user = decoded;
+    c.set("user", decoded);
     await next();
   } catch (error) {
     return c.json({ error: "Invalid token error" }, 422);

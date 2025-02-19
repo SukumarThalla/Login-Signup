@@ -1,1 +1,0 @@
-ALTER TABLE "PasswordRejecttoken" ADD COLUMN "token" varchar(255) NOT NULL;

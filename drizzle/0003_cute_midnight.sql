@@ -1,0 +1,1 @@
+ALTER TABLE "password_reject_token" ADD COLUMN "is_verified" boolean DEFAULT false;

@@ -2,7 +2,9 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import dbConfig from "../config/dbConfig";
 import fs from "fs";
 import { usersData } from "./schemes/usersData";
+import { refreshToken } from "./schemes/refreshToken";
 import pg from "pg";
+import { PasswordRejectToken } from "./schemes/resetPasswordToken";
 
 const { Pool } = pg;
 
@@ -21,6 +23,8 @@ const pool = new Pool({
 export const db = drizzle(pool, {
   schema: {
     usersData,
+    refreshToken,
+    PasswordRejectToken,
   },
 });
 

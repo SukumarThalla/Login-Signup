@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f7fc;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .container {
+        width: 100%;
+        max-width: 400px;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .header h2 {
+        color: #333;
+        font-size: 24px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      label {
+        font-size: 16px;
+        font-weight: bold;
+      }
+      input[type="email"],
+      input[type="password"] {
+        width: 95%;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-top: 5px;
+      }
+      button {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        color: white;
+        background-color: #1a9a53;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+      button:hover {
+        background-color: #3dde45;
+      }
+      .forgot-password {
+        position: absolute;
+        bottom: 15px;
+        right: 20px;
+      }
+      .forgot-password a {
+        color: #1a9a53;
+        text-decoration: none;
+        font-size: 14px;
+      }
+      .forgot-password a:invalid {
+        pointer-events: none;
+        color: #999;
+        cursor: default;
+      }
+      .error {
+        color: red;
+        font-size: 14px;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h2>Sign In</h2>
+      </div>
+      <form action="/signin" method="POST">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="Enter your email"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            placeholder="Enter your password"
+          />
+        </div>
+
+        <div class="form-group">
+          <button type="submit">Sign In</button>
+        </div>
+
+        <% if (error) { %>
+        <div class="error">
+          <p><%= error %></p>
+        </div>
+        <% } %>
+      </form>
+      <div class="forgot-password">
+        <a href="/forgot-password" id="forgotPasswordLink">Forgot Password?</a>
+      </div>
+    </div>
+  </body>
+</html>
