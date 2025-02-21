@@ -26,7 +26,7 @@ export const verifyToken = async (token: string, c: Context) => {
     return c.json({ error: "Invalid Token" }, 400);
   }
 };
-//ACCESS TOKEN GEM
+//ACCESS TOKEN GE n
 export const tokenGen = async (userId: number) => {
   if (!SECRET_KEY) {
     return { error: "secret Toke not found" };
@@ -51,10 +51,14 @@ export const generateResetToken = async (userId: number) => {
 
 // PASSWORD RESET TOKEN VERIFY
 export const resetVerifyToken = async (token: string, c: Context) => {
-  const tokenData = await dbServices.getUserByToken(token);
-  if (!tokenData) {
-    return tokenData;
+  try {
+    const decoded = verify(token, SECRET_KEY) as { userId: number };
+    const ExistedUsed = await dbServices.getUserById(decoded.userId);
+    if (!ExistedUsed) {
+      return false;
+    }
+    return ExistedUsed.Id;
+  } catch (error) {
+    return c.json({ error: "Invalid Token" }, 400);
   }
-  await verifyToken(tokenData.token, c);
-  return tokenData.user_id;
 };

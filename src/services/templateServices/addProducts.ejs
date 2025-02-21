@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Product</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 500px;
+        background: white;
+        padding: 20px;
+        margin: auto;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        text-align: center;
+        color: #333;
+      }
+      label {
+        font-weight: bold;
+        display: block;
+        margin: 10px 0 5px;
+      }
+      select {
+        width: 99%;
+        padding: 8px;
+        margin-bottom: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      input,
+      textarea {
+        width: 96%;
+        padding: 8px;
+        margin-bottom: 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      button {
+        width: 99%;
+        background: #28a745;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:hover {
+        background: #218838;
+      }
+      .additional-links {
+        margin-top: 20px;
+      }
+
+      .additional-links a {
+        color: #1a9a53;
+        text-decoration: none;
+        font-size: 14px;
+      }
+
+      .additional-links a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Add Product</h2>
+      <form action="/add-product" method="post">
+        <label for="name">Product Name:</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder=" Your Product Name"
+          required
+        />
+
+        <label for="description">Description:</label>
+        <textarea
+          id="description"
+          name="description"
+          placeholder=" Your Product description"
+        ></textarea>
+
+        <label for="price">Price:</label>
+        <input
+          type="number"
+          id="price"
+          name="price"
+          step="0.01"
+          placeholder=" Your Product price"
+          required
+        />
+
+        <label for="stockQuantity">Stock Quantity:</label>
+        <input
+          type="number"
+          id="stockQuantity"
+          name="stockQuantity"
+          placeholder=" Your Product Stock Quantity"
+          required
+        />
+
+        <label for="category">Category:</label>
+        <select
+          id="category"
+          name="category"
+          placeholder=" Your Product category"
+          required
+        >
+          <option value="" disabled selected>Select the category</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Clothing">Clothing</option>
+          <option value="Home">Home</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <label for="imageUrl">Product Image URL:</label>
+        <input
+          type="imageUrl"
+          id="imageUrl"
+          name="imageUrl"
+          placeholder="paste image URL"
+          required
+        />
+
+        <button type="submit">Submit</button>
+      </form>
+      <div class="additional-links">
+        <a href="/dashboard">GO TO HOME</a>
+      </div>
+    </div>
+    <!-- <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document
+          .getElementById("productForm")
+          .addEventListener("submit", uploadImage);
+      });
+      async function uploadImage(event) {
+        event.preventDefault();
+        const fileInput = document.getElementById("image");
+        const file = fileInput.files[0];
+        if (!fileInput.files.length) {
+          alert("image must be jpg format");
+          return false;
+        }
+
+        const response = await fetch("/get-preSignUrl", {
+          method: "POST",
+          body: JSON.stringify({ fileName: file.name, fileType: file.type }),
+          headers: { "Content-Type": "application/json" },
+        });
+        if (!response.ok) {
+          alert("Failed to get upload URL.");
+          return false;
+        }
+        const { signedUrl, filePath } = await response.json();
+
+        // const uploadImage = await fetch(signedUrl, {
+        //   method: "PUT",
+        //   body: file,
+        //   headers: {
+        //     "Content-Type": file.type,
+        //   },
+        // });
+        // Gather form data
+        const formData = new FormData(document.getElementById("productForm"));
+
+        const productResponse = await fetch("/add-product", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await productResponse.json();
+        if (productResponse.ok) {
+          alert("Product added successfully!");
+          window.location.href = "/dashboard"; // Redirect after success
+        } else {
+          alert("Failed to add product: " + result.error);
+        }
+
+        console.log(signedUrl);
+        document.getElementById("imageUrl").value = filePath;
+        event.target.submit();
+      }
+    </script> -->
+    <!-- <label for="image">Product Image:</label> -->
+    <!-- <input type="file" id="image" name="image" accept="image/*" required />
+        <input type="hidden" id="imageUrl" name="imageUrl" /> -->
+  </body>
+</html>

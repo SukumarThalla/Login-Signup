@@ -1,36 +1,52 @@
 import { Hono } from "Hono";
 import { UserControllers } from "../controllers/UserController";
-import { jwtValidation } from "../middleware/authMiddleware";
-const route_Handlers = new Hono();
+import { jwtValidation, RemoveCookie } from "../middleware/authMiddleware";
+import { seedFunction } from "../scripts/seeds";
+const routes = new Hono();
 
-route_Handlers.post("/signup", (c) => UserControllers.signUp(c));
-route_Handlers.get("/verify-email/", (c) => UserControllers.verifyEmail(c));
+routes.post("/signup", (c) => UserControllers.signUp(c));
+routes.get("/verify-email/", (c) => UserControllers.verifyEmail(c));
 
-route_Handlers.get("/signin", (c: any) => UserControllers.signInEjs(c));
-route_Handlers.post("/signin", (c: any) => UserControllers.signIn(c));
+routes.get("/signin", (c: any) => UserControllers.signInEjs(c));
+routes.post("/signin", (c: any) => UserControllers.signIn(c));
 
-route_Handlers.get("/forgot-password", (c: any) =>
-  UserControllers.forgetEjs(c)
-);
-route_Handlers.post("/forgot-password", (c: any) =>
-  UserControllers.forgetPassword(c)
-);
+routes.get("/forgot-password", (c: any) => UserControllers.forgetEjs(c));
+routes.post("/forgot-password", (c: any) => UserControllers.forgetPassword(c));
 
-route_Handlers.get("/reset-password", (c) =>
-  UserControllers.resetPasswordEjs(c)
-);
-route_Handlers.post("/reset-password", (c) => UserControllers.resetPassword(c));
+routes.get("/reset-password", (c) => UserControllers.resetPasswordEjs(c));
+routes.post("/reset-password", (c) => UserControllers.resetPassword(c));
 
-route_Handlers.get("/user/profile", jwtValidation, (c) =>
+routes.get("/dashboard", jwtValidation, (c) => UserControllers.dashBoard(c));
+routes.get("/user/profile", jwtValidation, (c) =>
   UserControllers.userProfile(c)
 );
-route_Handlers.get("/dashboard", jwtValidation, (c) =>
-  UserControllers.dashBoard(c)
+routes.get("/update-password", jwtValidation, (c) =>
+  UserControllers.updatePasswordEjs(c)
+);
+routes.post("/update-password", jwtValidation, (c) =>
+  UserControllers.updatePassword(c)
 );
 
-export { route_Handlers };
+routes.get("/products", jwtValidation, (c) => UserControllers.products(c));
 
-// route_Handlers.get("/get-users-data", (c: any) =>
+routes.post("/add-product", jwtValidation, (c) =>
+  UserControllers.addProducts(c)
+);
+
+routes.get("getAllProducts", jwtValidation, (c) =>
+  UserControllers.getAllProducts(c)
+);
+
+ routes.post("/get-preSignUrl", async (c) => UserControllers.getSignUrl(c));
+routes.get("signOut", RemoveCookie, (c) => UserControllers.signOut(c));
+
+routes.get("/seed", async (c) => {
+  await seedFunction(c);
+  return c.json({ message: "Seeding completed!" });
+});
+export { routes };
+
+//  route_Handlers.get("/get-users-data", (c: any) =>
 //   UserDataControllers.getAllUsers(c)
 // );
 
